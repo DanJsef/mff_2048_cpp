@@ -1,1 +1,28 @@
-int main(int argc, char *argv[]) {}
+#include "control.hpp"
+#include <ncurses.h>
+
+int main() {
+  initscr();
+  noecho();
+  curs_set(0);
+  start_color();
+  keypad(stdscr, true);
+
+  init_pair(1, COLOR_BLACK, COLOR_WHITE);
+  init_pair(2, COLOR_BLACK, COLOR_CYAN);
+  init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(4, COLOR_BLACK, COLOR_BLUE);
+  init_pair(5, COLOR_BLACK, COLOR_GREEN);
+  init_pair(6, COLOR_BLACK, COLOR_RED);
+  init_pair(7, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(8, COLOR_BLACK, COLOR_BLUE);
+  init_pair(9, COLOR_BLACK, COLOR_GREEN);
+  init_pair(10, COLOR_BLACK, COLOR_RED);
+  init_pair(11, COLOR_BLACK, COLOR_YELLOW);
+
+  Control control;
+
+  control.game_loop();
+
+  endwin();
+}
