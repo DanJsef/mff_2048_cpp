@@ -6,6 +6,7 @@
 class State;
 
 enum class Mode { Player, Solver };
+enum class Controls { Wasd, Arrows };
 
 class Control {
 public:
@@ -13,10 +14,19 @@ public:
 
   inline State *getCurrentState() const { return currentState; }
   inline int getInput() const { return input; }
+
   inline void setTarget(std::size_t t) { target = t; }
   inline std::size_t getTarget() const { return target; }
+
   inline void setSize(std::size_t s) { size = s; }
   inline std::size_t getSize() const { return size; }
+
+  inline void setControls(Controls c) { controls = c; }
+  inline Controls getControls() const { return controls; }
+
+  inline void setMode(Mode m) { mode = m; }
+  inline Mode getMode() const { return mode; }
+
   inline void end() { running = false; }
 
   void render() {
@@ -55,5 +65,6 @@ private:
   std::size_t target = 2048;
   std::size_t size = 4;
   Mode mode = Mode::Player;
+  Controls controls = Controls::Wasd;
   int input;
 };

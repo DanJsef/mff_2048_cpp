@@ -40,6 +40,10 @@ void MainMenu::toggle(Control *control) {
     control->setState(TargetMenu::getInstance());
   else if (choices[choice] == "Size")
     control->setState(SizeMenu::getInstance());
+  else if (choices[choice] == "Mode")
+    control->setState(ModeMenu::getInstance());
+  else if (choices[choice] == "Controls")
+    control->setState(ControlsMenu::getInstance());
   else if (choices[choice] == "Quit")
     control->end();
 }
@@ -51,6 +55,22 @@ void TargetMenu::toggle(Control *control) {
 
 void SizeMenu::toggle(Control *control) {
   control->setSize(std::stoull(choices[choice]));
+  control->setState(MainMenu::getInstance());
+}
+
+void ControlsMenu::toggle(Control *control) {
+  if (choices[choice] == "WASD")
+    control->setControls(Controls::Wasd);
+  else if (choices[choice] == "Arrows")
+    control->setControls(Controls::Arrows);
+  control->setState(MainMenu::getInstance());
+}
+
+void ModeMenu::toggle(Control *control) {
+  if (choices[choice] == "Player")
+    control->setMode(Mode::Player);
+  else if (choices[choice] == "Solver")
+    control->setMode(Mode::Solver);
   control->setState(MainMenu::getInstance());
 }
 

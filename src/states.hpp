@@ -40,7 +40,7 @@ public:
 private:
   MainMenu() {
     name = "Main menu";
-    choices = {"Start", "Target", "Size", "Quit"};
+    choices = {"Start", "Target", "Size", "Mode", "Controls", "Quit"};
   }
 };
 
@@ -56,7 +56,7 @@ public:
 
 private:
   TargetMenu() {
-    name = "Target menu";
+    name = "Select target";
     choices = {"128", "256", "512", "1024", "2048"};
   }
 };
@@ -73,8 +73,42 @@ public:
 
 private:
   SizeMenu() {
-    name = "Size menu";
+    name = "Select board size";
     choices = {"4", "5", "6"};
+  }
+};
+
+class ControlsMenu : Menu {
+public:
+  void toggle(Control *control) override;
+  void enter(Control *control) override {}
+
+  static State &getInstance() {
+    static ControlsMenu singleton;
+    return singleton;
+  }
+
+private:
+  ControlsMenu() {
+    name = "Select controls";
+    choices = {"WASD", "Arrows"};
+  }
+};
+
+class ModeMenu : Menu {
+public:
+  void toggle(Control *control) override;
+  void enter(Control *control) override {}
+
+  static State &getInstance() {
+    static ModeMenu singleton;
+    return singleton;
+  }
+
+private:
+  ModeMenu() {
+    name = "Select mode";
+    choices = {"Player", "Solver"};
   }
 };
 
