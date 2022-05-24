@@ -33,4 +33,25 @@ nebo
 
 ## Ovládání
 
+V celé aplikaci je ovládání řešeno pomocí klávesnice. Konkrétně jsou využity následující klávesy.
+
+- Pohyb: <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> nebo <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+- Potvrzení: <kbd>⏎ Enter</kbd>
+- Ukončení: <kbd>Q</kbd>,<kbd>X</kbd>
+- Krokování: <kbd>N</kbd>
+
+V libovolné chvíli lze aplikaci ukončit stlačením <kbd>Q</kbd>.
+
+### Menu
+
+V každém menu je pohyb mezi možnostmi vertikální. Mezi možnostmi se tak lze pohybovat pomocí dvojice <kbd>↑</kbd><kbd>↓</kbd> nebo <kbd>W</kbd><kbd>S</kbd> (obojí funguje po celou dobu) a aktuálně zvýrazněnou možnost potvrdit <kbd>⏎ Enter</kbd>.
+
+### Hra v režimu hráče
+
+Pro volbu směru, kterým se mají dlaždice posunout, slouží <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> nebo <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>. Aktivní je vždy pouze jedna kombinace dle volby v hlavním menu. Ukončit aktuální stav hry a vrátit se do hlavního menu lze stlačením <kbd>X</kbd>.
+
+### Hra v režimu solveru
+
+V režimu solveru probíhá krokování jednotlivých tahů stlačením <kbd>N</kbd>. Ukončit aktuální stav hry a vrátit se do hlavního menu lze opět stlačením <kbd>X</kbd>.
+
 ## Architektura
