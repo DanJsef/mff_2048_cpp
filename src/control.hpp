@@ -1,12 +1,10 @@
 #pragma once
 #include "states.hpp"
+#include "types.hpp"
 #include <cstddef>
 #include <ncurses.h>
 
 class State;
-
-enum class Mode { Player, Solver };
-enum class Controls { Wasd, Arrows };
 
 class Control {
 public:
@@ -21,8 +19,8 @@ public:
   inline void setSize(std::size_t s) { size = s; }
   inline std::size_t getSize() const { return size; }
 
-  inline void setControls(Controls c) { controls = c; }
-  inline Controls getControls() const { return controls; }
+  inline void setControls(Keyboard c) { controls = c; }
+  inline Keyboard getControls() const { return controls; }
 
   inline void setMode(Mode m) { mode = m; }
   inline Mode getMode() const { return mode; }
@@ -65,6 +63,6 @@ private:
   std::size_t target = 2048;
   std::size_t size = 4;
   Mode mode = Mode::Player;
-  Controls controls = Controls::Wasd;
+  Keyboard controls = Keyboard::Wasd;
   int input;
 };

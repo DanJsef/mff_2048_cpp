@@ -1,6 +1,7 @@
 #pragma once
 #include "control.hpp"
 #include "engine.hpp"
+#include "types.hpp"
 #include <cstddef>
 #include <ncurses.h>
 #include <string>
@@ -159,4 +160,18 @@ private:
   void render_tile(int x, int y, int value) const;
   std::string create_tile(std::string s, size_t length) const;
   Engine engine;
+  const std::vector<int> getControls(Keyboard controls) const {
+    switch (controls) {
+    case Keyboard::Arrows:
+      return std::vector<int>{KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN};
+    case Keyboard::Wasd:
+      return std::vector<int>{
+          'a',
+          'd',
+          'w',
+          's',
+      };
+    }
+    __builtin_unreachable();
+  }
 };

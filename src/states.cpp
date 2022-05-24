@@ -60,9 +60,9 @@ void SizeMenu::toggle(Control *control) {
 
 void ControlsMenu::toggle(Control *control) {
   if (choices[choice] == "WASD")
-    control->setControls(Controls::Wasd);
+    control->setControls(Keyboard::Wasd);
   else if (choices[choice] == "Arrows")
-    control->setControls(Controls::Arrows);
+    control->setControls(Keyboard::Arrows);
   control->setState(MainMenu::getInstance());
 }
 
@@ -93,23 +93,17 @@ void Game::toggle(Control *control) {
 }
 
 void Game::userInput(Control *control) {
-  switch (control->getInput()) {
-  case 'a':
+  const std::vector<int> controls = getControls(control->getControls());
+  if (controls[0] == control->getInput())
     engine.left();
-    break;
-  case 'd':
+  else if (controls[1] == control->getInput())
     engine.right();
-    break;
-  case 'w':
+  else if (controls[2] == control->getInput())
     engine.up();
-    break;
-  case 's':
+  else if (controls[3] == control->getInput())
     engine.down();
-    break;
-  case 'x':
+  else if ('x' == control->getInput())
     control->toggle();
-    break;
-  }
   if (engine.check_win() || engine.check_lose())
     control->toggle();
 }
