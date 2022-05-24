@@ -24,7 +24,10 @@ public:
     currentState->render(this);
   }
 
-  void toggle() { currentState->toggle(this); }
+  void toggle() {
+    currentState->toggle(this);
+    currentState->enter(this);
+  }
 
   void userInput() {
     input = getch();
@@ -37,11 +40,7 @@ public:
     }
   }
 
-  void setState(State &newState) {
-    currentState->exit(this);
-    currentState = &newState;
-    currentState->enter(this);
-  }
+  void setState(State &newState) { currentState = &newState; }
 
   void game_loop() {
     while (running) {

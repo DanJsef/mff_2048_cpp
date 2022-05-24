@@ -1,5 +1,6 @@
 #pragma once
 #include "control.hpp"
+#include "engine.hpp"
 #include <cstddef>
 #include <ncurses.h>
 #include <string>
@@ -9,9 +10,8 @@ class Control;
 
 class State {
 public:
-  virtual void enter(Control *control) = 0;
   virtual void toggle(Control *control) = 0;
-  virtual void exit(Control *control) = 0;
+  virtual void enter(Control *control) = 0;
   virtual void render(Control *control) const = 0;
   virtual void userInput(Control *control) = 0;
 };
@@ -29,9 +29,8 @@ protected:
 
 class MainMenu : Menu {
 public:
-  void enter(Control *control) override {}
   void toggle(Control *control) override;
-  void exit(Control *control) override {}
+  void enter(Control *control) override {}
 
   static State &getInstance() {
     static MainMenu singleton;
@@ -47,9 +46,8 @@ private:
 
 class TargetMenu : Menu {
 public:
-  void enter(Control *control) override {}
   void toggle(Control *control) override;
-  void exit(Control *control) override {}
+  void enter(Control *control) override {}
 
   static State &getInstance() {
     static TargetMenu singleton;
@@ -65,9 +63,8 @@ private:
 
 class SizeMenu : Menu {
 public:
-  void enter(Control *control) override {}
   void toggle(Control *control) override;
-  void exit(Control *control) override {}
+  void enter(Control *control) override {}
 
   static State &getInstance() {
     static SizeMenu singleton;
@@ -81,19 +78,51 @@ private:
   }
 };
 
+class EndMenu : public Menu {
+public:
+  void toggle(Control *control) override;
+  void enter(Control *control) override {}
+
+protected:
+  EndMenu() { choices = {"Restart", "Main menu", "Quit"}; }
+};
+
+class WinMenu : public EndMenu {
+public:
+  static State &getInstance() {
+    static WinMenu singleton;
+    return singleton;
+  }
+
+private:
+  WinMenu() { name = "Congrats, you won!"; }
+};
+
+class LoseMenu : public EndMenu {
+public:
+  static State &getInstance() {
+    static LoseMenu singleton;
+    return singleton;
+  }
+
+private:
+  LoseMenu() { name = "Game Over"; }
+};
+
 class Game : State {
 public:
-  void enter(Control *control) {}
-  void toggle(Control *control);
-  void userInput(Control *control);
-  void exit(Control *control) {}
-  void render(Control *control) const;
+  void toggle(Control *control) override;
+  void userInput(Control *control) override;
+  void render(Control *control) const override;
+  void enter(Control *control) override;
+
   static State &getInstance() {
     static Game singleton;
     return singleton;
   }
 
 private:
-  bool finished = false;
-  int count = 0;
+  void render_tile(int x, int y, int value) const;
+  std::string create_tile(std::string s, size_t length) const;
+  Engine engine;
 };

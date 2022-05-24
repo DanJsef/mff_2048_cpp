@@ -8,8 +8,9 @@ int main() {
   start_color();
   keypad(stdscr, true);
 
-  init_pair(1, COLOR_BLACK, COLOR_WHITE);
-  init_pair(2, COLOR_BLACK, COLOR_CYAN);
+  init_pair(0, COLOR_BLACK, COLOR_WHITE);
+  init_pair(1, COLOR_BLACK, COLOR_CYAN);
+  init_pair(2, COLOR_BLACK, COLOR_RED);
   init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
   init_pair(4, COLOR_BLACK, COLOR_BLUE);
   init_pair(5, COLOR_BLACK, COLOR_GREEN);

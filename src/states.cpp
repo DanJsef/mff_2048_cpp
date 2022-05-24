@@ -1,4 +1,5 @@
 #include "control.hpp"
+#include <cmath>
 #include <ncurses.h>
 #include <string>
 
@@ -8,16 +9,12 @@ void Menu::userInput(Control *control) {
   switch (control->getInput()) {
   case 'w':
   case KEY_UP:
-    if (choice == 0)
-      choice = choices.size() - 1;
-    else
+    if (choice > 0)
       --choice;
     break;
   case 's':
   case KEY_DOWN:
-    if (choice == choices.size() - 1)
-      choice = 0;
-    else
+    if (choice < choices.size() - 1)
       ++choice;
     break;
   case '\n':
@@ -57,19 +54,74 @@ void SizeMenu::toggle(Control *control) {
   control->setState(MainMenu::getInstance());
 }
 
+void EndMenu::toggle(Control *control) {
+  if (choices[choice] == "Restart")
+    control->setState(Game::getInstance());
+  else if (choices[choice] == "Main menu")
+    control->setState(MainMenu::getInstance());
+  else if (choices[choice] == "Quit")
+    control->end();
+}
+
 void Game::toggle(Control *control) {
-  control->setState(MainMenu::getInstance());
+  if (engine.check_win())
+    control->setState(WinMenu::getInstance());
+  else if (engine.check_lose())
+    control->setState(LoseMenu::getInstance());
+  else
+    control->setState(MainMenu::getInstance());
 }
 
 void Game::userInput(Control *control) {
   switch (control->getInput()) {
+  case 'a':
+    engine.left();
+    break;
   case 'd':
-  case KEY_RIGHT:
+    engine.right();
+    break;
+  case 'w':
+    engine.up();
+    break;
+  case 's':
+    engine.down();
+    break;
+  case 'x':
     control->toggle();
     break;
   }
+  if (engine.check_win() || engine.check_lose())
+    control->toggle();
+}
+
+void Game::enter(Control *control) {
+  engine.setup(control->getSize(), control->getTarget());
+}
+
+std::string Game::create_tile(std::string s, size_t length) const {
+  const int padding_right = (6 - s.length()) / 2;
+  const int padding_left = 6 - s.length() - padding_right;
+
+  s.insert(0, std::string(padding_left, ' '));
+  s.insert(s.length(), std::string(padding_right, ' '));
+
+  return s;
+}
+
+void Game::render_tile(int x, int y, int value) const {
+  std::string s = create_tile(std::to_string(value), 6);
+  y = y * 3;
+  x = x * 6;
+
+  attron(COLOR_PAIR(std::log2(value)));
+  mvprintw(y, x, "      ");
+  mvprintw(y + 1, x, "%s", s.c_str());
+  mvprintw(y + 2, x, "      ");
+  attroff(COLOR_PAIR(std::log2(value)));
 }
 
 void Game::render(Control *control) const {
-  printw("Size: %lu, Target: %lu", control->getSize(), control->getTarget());
+  for (int x = 0; x < control->getSize(); ++x)
+    for (int y = 0; y < control->getSize(); ++y)
+      render_tile(y, x, engine.board[x][y]);
 }
