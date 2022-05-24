@@ -1,4 +1,5 @@
 #include "control.hpp"
+#include "solver.hpp"
 #include <cmath>
 #include <ncurses.h>
 #include <string>
@@ -92,18 +93,31 @@ void Game::toggle(Control *control) {
     control->setState(MainMenu::getInstance());
 }
 
-void Game::userInput(Control *control) {
-  const std::vector<int> controls = getControls(control->getControls());
-  if (controls[0] == control->getInput())
+void Game::player_input(std::vector<int> controls, int input) {
+  if (controls[0] == input)
     engine.left();
-  else if (controls[1] == control->getInput())
+  else if (controls[1] == input)
     engine.right();
-  else if (controls[2] == control->getInput())
+  else if (controls[2] == input)
     engine.up();
-  else if (controls[3] == control->getInput())
+  else if (controls[3] == input)
     engine.down();
-  else if ('x' == control->getInput())
+}
+
+void Game::userInput(Control *control) {
+  if ('x' == control->getInput())
     control->toggle();
+  else {
+    switch (control->getMode()) {
+    case Mode::Player:
+      player_input(getControls(control->getControls()), control->getInput());
+      break;
+    case Mode::Solver:
+      if ('\n' == control->getInput())
+        solve(engine);
+      break;
+    }
+  }
   if (engine.check_win() || engine.check_lose())
     control->toggle();
 }
@@ -137,5 +151,5 @@ void Game::render_tile(int x, int y, int value) const {
 void Game::render(Control *control) const {
   for (int x = 0; x < control->getSize(); ++x)
     for (int y = 0; y < control->getSize(); ++y)
-      render_tile(y, x, engine.board[x][y]);
+      render_tile(y, x, engine.getBoard()[x][y]);
 }

@@ -160,6 +160,9 @@ private:
   void render_tile(int x, int y, int value) const;
   std::string create_tile(std::string s, size_t length) const;
   Engine engine;
+
+  void player_input(std::vector<int> controls, int input);
+
   const std::vector<int> getControls(Keyboard controls) const {
     switch (controls) {
     case Keyboard::Arrows:

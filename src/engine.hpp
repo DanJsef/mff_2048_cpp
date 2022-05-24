@@ -1,3 +1,4 @@
+#pragma once
 #include <algorithm>
 #include <random>
 #include <tuple>
@@ -16,11 +17,7 @@ public:
     new_tile();
     new_tile();
   }
-  boardType board;
-  int tile_count;
-  int highest;
-  int target;
-  bool moved;
+
   void left() {
     compress_left(false);
     merge_left(false);
@@ -46,6 +43,8 @@ public:
     add_tile();
   }
 
+  const boardType &getBoard() const { return board; }
+
   bool check_win() const { return (target == highest); }
   bool check_lose() const {
 
@@ -70,6 +69,12 @@ public:
   }
 
 private:
+  boardType board;
+  int tile_count;
+  int highest;
+  int target;
+  bool moved;
+
   int random(int to) const {
     std::random_device rd;
     std::mt19937 gen(rd());
