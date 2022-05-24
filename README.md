@@ -20,6 +20,17 @@ Hra 2048 spočívá v postupném spojování čísel stejné hodnoty, dokud nevz
   - vrátit se do úvodního menu
   - ukončit program
 
+## Požadavky pro instalaci
+
+- Gcc
+- Cmake
+- Make
+- Ncurses
+
+nebo
+
+- Docker
+
 ## Instalace
 
 1. `mkdir build && cd build`
@@ -55,3 +66,37 @@ Pro volbu směru, kterým se mají dlaždice posunout, slouží <kbd>↑</kbd>
 V režimu solveru probíhá krokování jednotlivých tahů stlačením <kbd>N</kbd>. Ukončit aktuální stav hry a vrátit se do hlavního menu lze opět stlačením <kbd>X</kbd>.
 
 ## Architektura
+
+Aplikace je rozdělena do čtyř hlavních čáští: Control, States, Engine, Solver.
+
+### Control
+
+Třída `Control` slouží jako entry point celé aplikace. Uchovává globální informace (Aktuální stav, nastavení, poslední input...). Zároveň zpracovává uživatelský vstup a spravuje jednotlivé stavy aplikace.
+
+### States
+
+Třídy jednotlivých stavů vychází ze základní virtuální třídy `State`. `State` požaduje implementaci následujících metod:
+
+- `render` - vykreslování stavu
+- `user_input` - zpracování uživatelkého vstupu
+- `toggle` - přepínání na následující stav
+- `enter` - inicializace stavu při přepunutí
+
+Pro všechny menu stavy je definována zákaldní třída `Menu : State`, která definuje motody `render` a `user_input`. Jednotlivá menu jsou pak třídy `XY : Menu`.
+
+Posledním stavem je `Game`, který interaguje s Enginem a Solverem.
+
+### Engine
+
+Třída `Engine` definuje chování samotné hrací plochy. Udržuje aktuální stav hrací plochy a poskytuje metody pro její manipulaci.
+
+### Solver
+
+Solver je složen ze čtyř funkcí:
+
+- `find_score_left` - vypočítá skóre pohybu vlevo
+- `find_score_up`- vypočítá skóre pohybu vpravo
+- `find_score_right`- vypočítá skóre pohybu dolů
+- `solve` - vyhodnotí skóre a provede tah pomocí `Engine`
+
+Skóre je počítáno jako součet volných polí daným směrem (1 bod za každé) a počtu dlaždic které lze spojit s tím, že dlaždice vyšší hodnoty mají větší váhu (konkrétně za spojení dlaždice je $2\cdot\log_2(hodnota)$ bodů). Funkce `solve` se pak snaží preferovat pouze tahy vlevo a nahoru, pokud ani jeden nelze provést dojde k tahu vpravo, až v případě že nelze provést ani ten táhne dolů.
