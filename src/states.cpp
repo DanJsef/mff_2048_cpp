@@ -114,7 +114,7 @@ void Game::user_input(Control *control) {
       player_input(get_controls(control->get_controls()), control->get_input());
       break;
     case Mode::Solver:
-      if ('\n' == control->get_input())
+      if ('n' == control->get_input())
         solve(engine);
       break;
     }
