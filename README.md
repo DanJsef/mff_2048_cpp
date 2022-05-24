@@ -19,3 +19,18 @@ Hra 2048 spočívá v postupném spojování čísel stejné hodnoty, dokud nevz
   - restartovat hru
   - vrátit se do úvodního menu
   - ukončit program
+
+## Instalace
+
+1. `mkdir build && cd build`
+2. `cmake ../`
+3. `make && ./2048`
+
+nebo
+
+1. `sudo docker build -t cpp_2048 .`
+2. `sudo docker run -it cpp_2048`
+
+## Ovládání
+
+## Architektura
