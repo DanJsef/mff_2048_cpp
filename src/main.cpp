@@ -1,7 +1,7 @@
 #include "control.hpp"
 #include <ncurses.h>
 
-int main() {
+void initialize_ncurses() {
   initscr();
   noecho();
   curs_set(0);
@@ -20,10 +20,17 @@ int main() {
   init_pair(9, COLOR_BLACK, COLOR_GREEN);
   init_pair(10, COLOR_BLACK, COLOR_RED);
   init_pair(11, COLOR_BLACK, COLOR_YELLOW);
+}
+
+void end_ncurses() { endwin(); }
+
+int main() {
+
+  initialize_ncurses();
 
   Control control;
 
   control.game_loop();
 
-  endwin();
+  end_ncurses();
 }

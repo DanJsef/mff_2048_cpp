@@ -8,60 +8,60 @@ class State;
 
 class Control {
 public:
-  Control() { currentState = &MainMenu::getInstance(); }
+  Control() { current_state = &MainMenu::get_instance(); }
 
-  inline State *getCurrentState() const { return currentState; }
-  inline int getInput() const { return input; }
+  inline State *get_current_state() const { return current_state; }
+  inline int get_input() const { return input; }
 
-  inline void setTarget(std::size_t t) { target = t; }
-  inline std::size_t getTarget() const { return target; }
+  inline void set_target(int t) { target = t; }
+  inline int get_target() const { return target; }
 
-  inline void setSize(std::size_t s) { size = s; }
-  inline std::size_t getSize() const { return size; }
+  inline void set_size(int s) { size = s; }
+  inline int get_size() const { return size; }
 
-  inline void setControls(Keyboard c) { controls = c; }
-  inline Keyboard getControls() const { return controls; }
+  inline void set_controls(Keyboard c) { controls = c; }
+  inline Keyboard get_controls() const { return controls; }
 
-  inline void setMode(Mode m) { mode = m; }
-  inline Mode getMode() const { return mode; }
+  inline void set_mode(Mode m) { mode = m; }
+  inline Mode get_mode() const { return mode; }
 
   inline void end() { running = false; }
 
   void render() {
     clear();
-    currentState->render(this);
+    current_state->render(this);
   }
 
   void toggle() {
-    currentState->toggle(this);
-    currentState->enter(this);
+    current_state->toggle(this);
+    current_state->enter(this);
   }
 
-  void userInput() {
+  void user_input() {
     input = getch();
     switch (input) {
     case 'q':
       running = false;
       break;
     default:
-      currentState->userInput(this);
+      current_state->user_input(this);
     }
   }
 
-  void setState(State &newState) { currentState = &newState; }
+  void set_state(State &newState) { current_state = &newState; }
 
   void game_loop() {
     while (running) {
       render();
-      userInput();
+      user_input();
     }
   }
 
 private:
-  State *currentState;
+  State *current_state;
   bool running = true;
-  std::size_t target = 2048;
-  std::size_t size = 4;
+  int target = 2048;
+  int size = 4;
   Mode mode = Mode::Player;
   Keyboard controls = Keyboard::Wasd;
   int input;

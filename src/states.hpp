@@ -14,26 +14,26 @@ public:
   virtual void toggle(Control *control) = 0;
   virtual void enter(Control *control) = 0;
   virtual void render(Control *control) const = 0;
-  virtual void userInput(Control *control) = 0;
+  virtual void user_input(Control *control) = 0;
 };
 
 class Menu : public State {
 public:
-  void userInput(Control *control) override;
+  void user_input(Control *control) override;
   void render(Control *control) const override;
 
 protected:
   std::string name;
   std::vector<std::string> choices;
-  std::size_t choice = 0;
+  int choice = 0;
 };
 
 class MainMenu : Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
-  static State &getInstance() {
+  static State &get_instance() {
     static MainMenu singleton;
     return singleton;
   }
@@ -48,9 +48,9 @@ private:
 class TargetMenu : Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
-  static State &getInstance() {
+  static State &get_instance() {
     static TargetMenu singleton;
     return singleton;
   }
@@ -65,9 +65,9 @@ private:
 class SizeMenu : Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
-  static State &getInstance() {
+  static State &get_instance() {
     static SizeMenu singleton;
     return singleton;
   }
@@ -82,9 +82,9 @@ private:
 class ControlsMenu : Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
-  static State &getInstance() {
+  static State &get_instance() {
     static ControlsMenu singleton;
     return singleton;
   }
@@ -99,9 +99,9 @@ private:
 class ModeMenu : Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
-  static State &getInstance() {
+  static State &get_instance() {
     static ModeMenu singleton;
     return singleton;
   }
@@ -116,7 +116,7 @@ private:
 class EndMenu : public Menu {
 public:
   void toggle(Control *control) override;
-  void enter(Control *control) override {}
+  void enter(Control *control) override { (void)control; }
 
 protected:
   EndMenu() { choices = {"Restart", "Main menu", "Quit"}; }
@@ -124,7 +124,7 @@ protected:
 
 class WinMenu : public EndMenu {
 public:
-  static State &getInstance() {
+  static State &get_instance() {
     static WinMenu singleton;
     return singleton;
   }
@@ -135,7 +135,7 @@ private:
 
 class LoseMenu : public EndMenu {
 public:
-  static State &getInstance() {
+  static State &get_instance() {
     static LoseMenu singleton;
     return singleton;
   }
@@ -147,23 +147,23 @@ private:
 class Game : State {
 public:
   void toggle(Control *control) override;
-  void userInput(Control *control) override;
+  void user_input(Control *control) override;
   void render(Control *control) const override;
   void enter(Control *control) override;
 
-  static State &getInstance() {
+  static State &get_instance() {
     static Game singleton;
     return singleton;
   }
 
 private:
   void render_tile(int x, int y, int value) const;
-  std::string create_tile(std::string s, size_t length) const;
+  std::string create_tile(std::string s) const;
   Engine engine;
 
   void player_input(std::vector<int> controls, int input);
 
-  const std::vector<int> getControls(Keyboard controls) const {
+  const std::vector<int> get_controls(Keyboard controls) const {
     switch (controls) {
     case Keyboard::Arrows:
       return std::vector<int>{KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN};

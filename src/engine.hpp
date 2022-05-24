@@ -4,12 +4,12 @@
 #include <tuple>
 #include <vector>
 
-using boardType = std::vector<std::vector<int>>;
+using board_type = std::vector<std::vector<int>>;
 
 class Engine {
 public:
-  void setup(int size, std::size_t target) {
-    board = boardType(size, std::vector<int>(size, 0));
+  void setup(int size, int target) {
+    board = board_type(size, std::vector<int>(size, 0));
     tile_count = 0;
     moved = false;
     this->target = target;
@@ -43,7 +43,7 @@ public:
     add_tile();
   }
 
-  const boardType &getBoard() const { return board; }
+  const board_type &get_board() const { return board; }
 
   bool check_win() const { return (target == highest); }
   bool check_lose() const {
@@ -52,14 +52,14 @@ public:
         std::tuple<int, int>(0, 1), std::tuple<int, int>(1, 0),
         std::tuple<int, int>(0, -1), std::tuple<int, int>(-1, 0)};
 
-    if (tile_count == (board.size() * board.size())) {
-      for (int r = 0; r < board.size(); ++r)
-        for (int c = 0; c < board.size(); ++c) {
+    if (tile_count == (int)(board.size() * board.size())) {
+      for (std::size_t r = 0; r < board.size(); ++r)
+        for (std::size_t c = 0; c < board.size(); ++c) {
           for (const auto &neighbour : neighbours) {
             int x = r + std::get<0>(neighbour);
             int y = c + std::get<1>(neighbour);
-            if (x >= 0 && y >= 0 && x < board.size() && y < board.size() &&
-                board[x][y] == board[r][c])
+            if (x >= 0 && y >= 0 && x < (int)board.size() &&
+                y < (int)board.size() && board[x][y] == board[r][c])
               return false;
           }
         }
@@ -69,7 +69,7 @@ public:
   }
 
 private:
-  boardType board;
+  board_type board;
   int tile_count;
   int highest;
   int target;
@@ -85,8 +85,8 @@ private:
   void new_tile() {
     std::vector<std::tuple<int, int>> free;
 
-    for (int x = 0; x < board.size(); ++x)
-      for (int y = 0; y < board.size(); ++y)
+    for (std::size_t x = 0; x < board.size(); ++x)
+      for (std::size_t y = 0; y < board.size(); ++y)
         if (board[x][y] == 0)
           free.push_back(std::make_tuple(x, y));
 
@@ -109,10 +109,10 @@ private:
   }
 
   void compress_left(bool reversed) {
-    for (int r = 0; r < board.size(); ++r) {
+    for (std::size_t r = 0; r < board.size(); ++r) {
       if (reversed)
         std::reverse(board[r].begin(), board[r].end());
-      for (int c = 0; c < board.size(); ++c) {
+      for (std::size_t c = 0; c < board.size(); ++c) {
         if (board[r][c] != 0) {
           int x = r;
           int y = c;
@@ -131,8 +131,8 @@ private:
   void compress_up(bool reversed) {
     if (reversed)
       std::reverse(board.begin(), board.end());
-    for (int r = 0; r < board.size(); ++r) {
-      for (int c = 0; c < board.size(); ++c) {
+    for (std::size_t r = 0; r < board.size(); ++r) {
+      for (std::size_t c = 0; c < board.size(); ++c) {
         if (board[r][c] != 0) {
           int x = r;
           int y = c;
@@ -149,10 +149,10 @@ private:
   }
 
   void merge_left(bool reversed) {
-    for (int r = 0; r < board.size(); ++r) {
+    for (std::size_t r = 0; r < board.size(); ++r) {
       if (reversed)
         std::reverse(board[r].begin(), board[r].end());
-      for (int c = 1; c < board.size(); ++c) {
+      for (std::size_t c = 1; c < board.size(); ++c) {
         if (board[r][c] != 0 && board[r][c - 1] == board[r][c]) {
           board[r][c - 1] = board[r][c - 1] * 2;
           board[r][c] = 0;
@@ -170,8 +170,8 @@ private:
   void merge_up(bool reversed) {
     if (reversed)
       std::reverse(board.begin(), board.end());
-    for (int r = 1; r < board.size(); ++r) {
-      for (int c = 0; c < board.size(); ++c) {
+    for (std::size_t r = 1; r < board.size(); ++r) {
+      for (std::size_t c = 0; c < board.size(); ++c) {
         if (board[r][c] != 0 && board[r - 1][c] == board[r][c]) {
           board[r - 1][c] = board[r - 1][c] * 2;
           board[r][c] = 0;

@@ -2,11 +2,11 @@
 #include "engine.hpp"
 #include <ncurses.h>
 
-inline int find_score_left(const boardType &board) {
+inline int find_score_left(const board_type &board) {
   int score = 0;
 
-  for (int r = 0; r < board.size(); ++r) {
-    for (int c = 1; c < board.size(); ++c) {
+  for (std::size_t r = 0; r < board.size(); ++r) {
+    for (std::size_t c = 1; c < board.size(); ++c) {
       if (board[r][c] != 0) {
         int y = c - 1;
         if (y == 0 && board[r][y] == 0)
@@ -25,11 +25,11 @@ inline int find_score_left(const boardType &board) {
   return score;
 }
 
-inline int find_score_up(const boardType &board) {
+inline int find_score_up(const board_type &board) {
   int score = 0;
 
-  for (int r = 1; r < board.size(); ++r) {
-    for (int c = 0; c < board.size(); ++c) {
+  for (std::size_t r = 1; r < board.size(); ++r) {
+    for (std::size_t c = 0; c < board.size(); ++c) {
       if (board[r][c] != 0) {
         int x = r - 1;
         if (x == 0 && board[x][c] == 0)
@@ -48,16 +48,16 @@ inline int find_score_up(const boardType &board) {
   return score;
 }
 
-inline int find_score_right(const boardType &board) {
+inline int find_score_right(const board_type &board) {
   int score = 0;
 
-  for (int r = 0; r < board.size(); ++r) {
-    for (int c = 0; c < board.size() - 1; ++c) {
+  for (std::size_t r = 0; r < board.size(); ++r) {
+    for (std::size_t c = 0; c < board.size() - 1; ++c) {
       if (board[r][c] != 0) {
         int y = c + 1;
-        if (y == board.size() - 1 && board[r][y] == 0)
+        if (y == (int)board.size() - 1 && board[r][y] == 0)
           ++score;
-        while (y < board.size() - 1 && board[r][y] == 0) {
+        while (y < (int)board.size() - 1 && board[r][y] == 0) {
           ++y;
           ++score;
         }
@@ -72,9 +72,9 @@ inline int find_score_right(const boardType &board) {
 }
 
 inline void solve(Engine &engine) {
-  int score_left = find_score_left(engine.getBoard());
-  int score_up = find_score_up(engine.getBoard());
-  int score_right = find_score_right(engine.getBoard());
+  int score_left = find_score_left(engine.get_board());
+  int score_up = find_score_up(engine.get_board());
+  int score_right = find_score_right(engine.get_board());
 
   if (score_left > 0 && score_left >= score_up)
     engine.left();
