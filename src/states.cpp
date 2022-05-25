@@ -139,18 +139,18 @@ std::string Game::create_tile(std::string s) const {
 
 void Game::render_tile(int x, int y, int value) const {
   std::string s = create_tile(std::to_string(value));
-  y = y * 3;
-  x = x * 6;
+  x = x * 3;
+  y = y * 6;
 
   attron(COLOR_PAIR(std::log2(value)));
-  mvprintw(y, x, "      ");
-  mvprintw(y + 1, x, "%s", s.c_str());
-  mvprintw(y + 2, x, "      ");
+  mvprintw(x, y, "      ");
+  mvprintw(x + 1, y, "%s", s.c_str());
+  mvprintw(x + 2, y, "      ");
   attroff(COLOR_PAIR(std::log2(value)));
 }
 
 void Game::render(Control *control) const {
   for (int x = 0; x < control->get_size(); ++x)
     for (int y = 0; y < control->get_size(); ++y)
-      render_tile(y, x, engine.get_board()[x][y]);
+      render_tile(x, y, engine.get_board()[x][y]);
 }

@@ -13,16 +13,16 @@ public:
   inline State *get_current_state() const { return current_state; }
   inline int get_input() const { return input; }
 
-  inline void set_target(int t) { target = t; }
+  inline void set_target(int target) { this->target = target; }
   inline int get_target() const { return target; }
 
-  inline void set_size(int s) { size = s; }
+  inline void set_size(int size) { this->size = size; }
   inline int get_size() const { return size; }
 
-  inline void set_controls(Keyboard c) { controls = c; }
+  inline void set_controls(Keyboard controls) { this->controls = controls; }
   inline Keyboard get_controls() const { return controls; }
 
-  inline void set_mode(Mode m) { mode = m; }
+  inline void set_mode(Mode mode) { this->mode = mode; }
   inline Mode get_mode() const { return mode; }
 
   inline void end() { running = false; }
