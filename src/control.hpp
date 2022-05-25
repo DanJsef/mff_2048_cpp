@@ -10,8 +10,10 @@ class Control {
 public:
   Control() { current_state = &MainMenu::get_instance(); }
 
+  // setters and getters
   inline State *get_current_state() const { return current_state; }
   inline int get_input() const { return input; }
+  inline void set_state(State &newState) { current_state = &newState; }
 
   inline void set_target(int target) { this->target = target; }
   inline int get_target() const { return target; }
@@ -25,18 +27,34 @@ public:
   inline void set_mode(Mode mode) { this->mode = mode; }
   inline Mode get_mode() const { return mode; }
 
+  /**
+   * Turns off the application.
+   *
+   */
   inline void end() { running = false; }
 
+  /**
+   * Render current state to screen.
+   *
+   */
   void render() {
     clear();
     current_state->render(this);
   }
 
+  /**
+   * Toggle to the next state and initialize the new state.
+   *
+   */
   void toggle() {
     current_state->toggle(this);
     current_state->enter(this);
   }
 
+  /**
+   * Read user input and process it or forward it to the current state.
+   *
+   */
   void user_input() {
     input = getch();
     switch (input) {
@@ -48,8 +66,10 @@ public:
     }
   }
 
-  void set_state(State &newState) { current_state = &newState; }
-
+  /**
+   * Run the main application loop.
+   *
+   */
   void game_loop() {
     while (running) {
       render();
