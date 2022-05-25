@@ -1,6 +1,10 @@
 #include "control.hpp"
 #include <ncurses.h>
 
+/**
+ * Initialize ncurses.
+ *
+ */
 void initialize_ncurses() {
   initscr();
   noecho();
@@ -22,6 +26,10 @@ void initialize_ncurses() {
   init_pair(11, COLOR_BLACK, COLOR_YELLOW);
 }
 
+/**
+ * Clean up after ncurses.
+ *
+ */
 void end_ncurses() { endwin(); }
 
 int main() {
