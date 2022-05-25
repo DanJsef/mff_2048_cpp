@@ -2,6 +2,12 @@
 #include "engine.hpp"
 #include <ncurses.h>
 
+/**
+ * Find score for left move.
+ *
+ * @param board Current board state.
+ * @return score for left move.
+ */
 inline int find_score_left(const board_type &board) {
   int score = 0;
 
@@ -10,6 +16,7 @@ inline int find_score_left(const board_type &board) {
       if (board[row][col] != 0) {
         int y = col - 1;
 
+        // Edge case for most left position.
         if (y == 0 && board[row][y] == 0)
           ++score;
 
@@ -28,6 +35,12 @@ inline int find_score_left(const board_type &board) {
   return score;
 }
 
+/**
+ * Find score for up move.
+ *
+ * @param board Current board state.
+ * @return score for up move.
+ */
 inline int find_score_up(const board_type &board) {
   int score = 0;
 
@@ -36,6 +49,7 @@ inline int find_score_up(const board_type &board) {
       if (board[row][col] != 0) {
         int x = row - 1;
 
+        // Edge case for most up position.
         if (x == 0 && board[x][col] == 0)
           ++score;
 
@@ -54,6 +68,12 @@ inline int find_score_up(const board_type &board) {
   return score;
 }
 
+/**
+ * Find score for right move.
+ *
+ * @param board Current board state.
+ * @return score for right move.
+ */
 inline int find_score_right(const board_type &board) {
   int score = 0;
 
@@ -62,6 +82,7 @@ inline int find_score_right(const board_type &board) {
       if (board[row][col] != 0) {
         int y = col + 1;
 
+        // Edge case for most right position.
         if (y == (int)board.size() - 1 && board[row][y] == 0)
           ++score;
 
