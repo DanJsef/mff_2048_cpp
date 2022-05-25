@@ -119,29 +119,36 @@ void Game::user_input(Control *control) {
       break;
     }
   }
+
+  // Toggle state if game ended.
   if (engine.check_win() || engine.check_lose())
     control->toggle();
 }
 
 void Game::enter(Control *control) {
+  // Initialize the engine when game state is entered.
   engine.setup(control->get_size(), control->get_target());
 }
 
-std::string Game::create_tile(std::string s) const {
-  const int padding_right = (6 - s.length()) / 2;
-  const int padding_left = 6 - s.length() - padding_right;
+std::string Game::create_tile(std::string value) const {
+  const int padding_right = (6 - value.length()) / 2;
+  const int padding_left = 6 - value.length() - padding_right;
 
-  s.insert(0, std::string(padding_left, ' '));
-  s.insert(s.length(), std::string(padding_right, ' '));
+  // Add padding around value text to fit the tile shape.
+  value.insert(0, std::string(padding_left, ' '));
+  value.insert(value.length(), std::string(padding_right, ' '));
 
-  return s;
+  return value;
 }
 
 void Game::render_tile(int x, int y, int value) const {
   std::string s = create_tile(std::to_string(value));
+
+  // Multiply the coordinates to fit tile grid.
   x = x * 3;
   y = y * 6;
 
+  // Activate color attrivute based on tile value.
   attron(COLOR_PAIR(std::log2(value)));
   mvprintw(x, y, "      ");
   mvprintw(x + 1, y, "%s", s.c_str());

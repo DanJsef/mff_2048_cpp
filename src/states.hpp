@@ -11,9 +11,32 @@ class Control;
 
 class State {
 public:
+  /**
+   * Toggle to the next state.
+   *
+   * @param *control Pointer to the control which holds the state.
+   */
   virtual void toggle(Control *control) = 0;
+
+  /**
+   * Initialize state.
+   *
+   * @param *control Pointer to the control which holds the state.
+   */
   virtual void enter(Control *control) = 0;
+
+  /**
+   * Render state.
+   *
+   * @param *control Pointer to the control which holds the state.
+   */
   virtual void render(Control *control) const = 0;
+
+  /**
+   * Handle user input in state.
+   *
+   * @param *control Pointer to the control which holds the state.
+   */
   virtual void user_input(Control *control) = 0;
 };
 
@@ -157,12 +180,34 @@ public:
   }
 
 private:
-  void render_tile(int x, int y, int value) const;
-  std::string create_tile(std::string s) const;
   Engine engine;
 
+  /**
+   * Render tile to selected position on screen.
+   *
+   * @param x Location on x axis.
+   * @param y Location on y axis.
+   * @param value Value of the tile.
+   */
+  void render_tile(int x, int y, int value) const;
+
+  /**
+   * Generate tile shape.
+   *
+   * @param value Value of the tile represented as string.
+   */
+  std::string create_tile(std::string value) const;
+
+  /**
+   * Handle input for player mode.
+   */
   void player_input(std::vector<int> controls, int input);
 
+  /**
+   * Get vector of selected controls.
+   *
+   * @return std::vector with selected controls.
+   */
   const std::vector<int> get_controls(Keyboard controls) const {
     switch (controls) {
     case Keyboard::Arrows:
